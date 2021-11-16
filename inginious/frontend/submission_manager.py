@@ -84,8 +84,9 @@ class WebAppSubmissionManager:
 
         self._plugin_manager.call_hook("submission_done", submission=submission, archive=archive, newsub=newsub)
 
-        for username in submission["username"]:
-            self._user_manager.update_user_stats(username, task, submission, result[0], grade, state, newsub)
+        if result[0] not in ["error", "crash", "killed"]:  # Only update user stats if the submission is valid
+            for username in submission["username"]:
+                self._user_manager.update_user_stats(username, task, submission, result[0], grade, state, newsub)
 
         if "outcome_service_url" in submission and "outcome_result_id" in submission and "outcome_consumer_key" in submission:
             for username in submission["username"]:
