@@ -259,7 +259,8 @@ class INGIniousAdministratorPage(INGIniousAuthPage):
         username = self.user_manager.session_username()
         if self.user_manager.session_logged_in() and self.user_manager.user_is_superadmin(username):
             return self.POST_AUTH()
-        return self.template_helper.render("forbidden.html", message=_("You have not eligible right to see this part"))
+        return self.template_helper.render("forbidden.html",
+                                           message=_("You have not sufficient right to see this part."))
 
 
 class SignInPage(INGIniousAuthPage):
