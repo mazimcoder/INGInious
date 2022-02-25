@@ -12,7 +12,13 @@ function revoke_binding(event){
         "action":"revoke_binding",
         "binding_id": binding_id
       },
-    }).done(function() {});
+    }).done(function(feedback) {
+        if (!feedback.hasOwnProperty('error')){
+            window.location.href = "users";
+        }
+        $('#feedback_bindings').text(feedback['message']);
+
+    });
 }
 function get_bindings(username){
     var bindings = {};

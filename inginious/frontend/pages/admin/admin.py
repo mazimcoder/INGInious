@@ -40,6 +40,7 @@ class AdministrationUserActionPage(INGIniousAdministratorPage):
     def POST_AUTH(self, *args, **kwargs):
         username = request.form.get("username")
         action = request.form.get("action")
+        feedback = None
         if action == "activate":
             activate_hash = self.user_manager.get_user_activate_hash(username)
             self.user_manager.activate_user(activate_hash)
@@ -50,7 +51,7 @@ class AdministrationUserActionPage(INGIniousAdministratorPage):
             return jsonify(user_info.bindings)
         elif action == "revoke_binding":
             binding_id = request.form.get("binding_id")
-            _, _ = self.user_manager.revoke_binding(username, binding_id)
+            error, feedback = self.user_manager.revoke_binding(username, binding_id)
         elif action == "add_user":
             realname = request.form.get("realname")
             email = request.form.get("email")
@@ -62,6 +63,6 @@ class AdministrationUserActionPage(INGIniousAdministratorPage):
                 "password": password,
                 "bindings": {},
                 "language": "en"})
-            if feedback:
-                return jsonify({"error": True, "message": feedback})
+        if feedback:
+            return jsonify({"error": True, "message": feedback})
         return jsonify({"message": ""})
