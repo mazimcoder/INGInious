@@ -17,6 +17,7 @@ from werkzeug.exceptions import NotFound
 
 
 from inginious.frontend.pages.course_admin.utils import INGIniousAdminPage
+from inginious.frontend.user_manager import UserManager
 
 
 class CourseDangerZonePage(INGIniousAdminPage):
@@ -216,7 +217,7 @@ class CourseDangerZonePage(INGIniousAdminPage):
 
     def page(self, course, msg="", error=False):
         """ Get all data and display the page """
-        thehash = self.user_manager.hash_password(str(random.getrandbits(256)))
+        thehash = UserManager.hash_password(str(random.getrandbits(256)))
         self.user_manager.set_session_token(thehash)
 
         backups = self.get_backup_list(course)

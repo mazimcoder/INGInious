@@ -11,6 +11,7 @@ from pymongo import ReturnDocument
 from werkzeug.exceptions import NotFound
 
 from inginious.frontend.pages.utils import INGIniousAuthPage
+from inginious.frontend.user_manager import UserManager
 
 
 class ProfilePage(INGIniousAuthPage):
@@ -53,8 +54,8 @@ class ProfilePage(INGIniousAuthPage):
             msg = _("Passwords don't match !")
             return result, msg, error
         elif self.app.allow_registration and len(data["passwd"]) >= 6:
-            oldpasswd_hash = self.user_manager.hash_password(data["oldpasswd"])
-            passwd_hash = self.user_manager.hash_password(data["passwd"])
+            oldpasswd_hash = UserManager.hash_password(data["oldpasswd"])
+            passwd_hash = UserManager.hash_password(data["passwd"])
 
             match = {"username": self.user_manager.session_username()}
             if "password" in userdata:
