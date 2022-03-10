@@ -510,7 +510,7 @@ class UserManager:
         if binding_id not in self.get_auth_methods().keys():
             error = True
             msg = _("Incorrect authentication binding.")
-        elif len(user_data.get("bindings", {}).keys()) > 1 or "password" in user_data:
+        elif user_data is not None and (len(user_data.get("bindings", {}).keys()) > 1 or "password" in user_data):
             user_data = self._database.users.find_one_and_update(
                 {"username": username},
                 {"$unset": {"bindings." + binding_id: 1}},

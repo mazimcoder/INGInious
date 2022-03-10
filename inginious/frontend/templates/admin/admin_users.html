@@ -19,7 +19,6 @@
 
 <h2>{{ _("Users Administration") }}</h2>
 <div>
-    <!--<a id="add_user" class="btn-sm btn btn-info" href="{{ get_homepath() }}/administrator/user_add"><i class="fa fa-user-plus"></i>{{_("Create User")}}</a>-->
     <button type="button" data-type="single" data-toggle="modal"
             data-target="#add_modal" class="btn btn-info add_user" title="Add"><i class="fa fa-user-plus"></i> Add user</button>
 </div>
@@ -66,7 +65,7 @@
                         <button type="button" data-username="{{all_users[user]['username']}}"
                                     data-type="single" data-toggle="modal"
                                     data-target="#binding_modal"
-                                    class="btn btn-secondary binding_user" title="Bindings"><i class="fa fa-cloud"></i></button>
+                                    class="btn btn-secondary binding_user" title="{{ _('Bindings') }}"><i class="fa fa-cloud"></i></button>
                         {% if all_users[user]["username"] != user_manager.session_username() %}
                             {% if all_users[user]["username"] not in activated_users%}
                                 <button type="button" data-username="{{all_users[user]['username']}}"

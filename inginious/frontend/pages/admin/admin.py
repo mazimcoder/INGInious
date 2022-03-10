@@ -48,7 +48,7 @@ class AdministrationUserActionPage(INGIniousAdministratorPage):
             self.user_manager.delete_user(username)
         elif action == "get_bindings":
             user_info = self.user_manager.get_user_info(username)
-            return jsonify(user_info.bindings)
+            return jsonify(user_info.bindings if user_info is not None else {})
         elif action == "revoke_binding":
             binding_id = request.form.get("binding_id")
             error, feedback = self.user_manager.revoke_binding(username, binding_id)
