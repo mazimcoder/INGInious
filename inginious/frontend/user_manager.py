@@ -364,7 +364,7 @@ class UserManager:
         for info in infos:
             retval[info["username"]] = UserInfo(info["realname"], info["email"], info["username"], info["bindings"],
                                                 info["language"])
-        return retval, self._database.users.count()
+        return retval, self._database.users.estimated_document_count()
 
     def get_users_info(self, usernames) -> Dict[str, Optional[UserInfo]]:
         """
@@ -526,8 +526,10 @@ class UserManager:
         """
         Delete a user
         :param username: the username of the user
+        :return a boolean if a user was deleted
         """
-        self._database.users.remove({"username": username})
+        result = self._database.users.delete_one({"username": username})
+        return result.deleted_count == 1
 
     def create_user(self, values):
         """
@@ -539,7 +541,7 @@ class UserManager:
             {"$or": [{"username": values["username"]}, {"email": values["email"]}]})
         if already_exits_user is not None:
             return _("User could not be created.")
-        self._database.users.insert({"username": values["username"],
+        self._database.users.insert_one({"username": values["username"],
                                      "realname": values["realname"],
                                      "email": values["email"],
                                      "password": self.hash_password(values["password"]),

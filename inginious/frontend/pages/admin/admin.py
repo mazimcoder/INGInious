@@ -43,9 +43,11 @@ class AdministrationUserActionPage(INGIniousAdministratorPage):
         feedback = None
         if action == "activate":
             activate_hash = self.user_manager.get_user_activate_hash(username)
-            self.user_manager.activate_user(activate_hash)
+            if not self.user_manager.activate_user(activate_hash):
+                feedback = _("User not found")
         elif action == "delete":
-            self.user_manager.delete_user(username)
+            if not self.user_manager.delete_user(username):
+                feedback = _("Impossible to delete this user")
         elif action == "get_bindings":
             user_info = self.user_manager.get_user_info(username)
             return jsonify(user_info.bindings if user_info is not None else {})
